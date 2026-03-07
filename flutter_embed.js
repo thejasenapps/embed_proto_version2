@@ -4,7 +4,9 @@
 
     init: function (config) {
 
-      const container = document.getElementById(config.container);
+      const container = (typeof config.container === 'string') 
+      ? document.getElementById(config.container) 
+      : config.container;
 
       if (!container) {
         console.error("Container not found");
