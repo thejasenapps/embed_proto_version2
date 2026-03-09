@@ -28,7 +28,7 @@
   script.src = GITHUB_URL + "flutter_embed.js";
   document.head.appendChild(script);
 
-    if ( && window.FlutterEmbed) {
+    if (window.FlutterEmbed) {
         window.FlutterEmbed.init({
           container: target, 
           appUrl: GITHUB_URL
