@@ -11,12 +11,10 @@
     <style>
       :host { all: initial; } 
       #container {
-        position: relative;
-        width: 350px;
-        height: 550px;
+        width: 100%;
+        height: 100%;
         background: white;
         border-radius: 15px;
-        display: block;
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         overflow: hidden;
       }
@@ -36,7 +34,7 @@
 
   const script = document.createElement('script');
   script.src = GITHUB_URL + "flutter_embed.js";
-
+  script.async = true;
 
   script.onload = () => {
       if (window.FlutterEmbed) {
