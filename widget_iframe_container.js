@@ -1,50 +1,79 @@
 (function () {
 
-  const CONFIG = {
-    appUrl: "https://thejasenapps.github.io/embed_proto_version2/",
-    defaultHeight: "550px",
-    borderRadius: "12px"
-  };
+  const GITHUB_URL = "https://thejasenapps.github.io/embed_proto_version2/";
+  const DEFAULT_HEIGHT = 550;
+  const DEFAULT_WIDTH = 350;
 
   function createWidget(mountPoint) {
 
-    const container = document.createElement("div");
-    container.style.width = "100%";
-    container.style.height = CONFIG.defaultHeight;
-    container.style.position = "relative";
-    container.style.borderRadius = CONFIG.borderRadius;
-    container.style.overflow = "hidden";
-    container.style.boxShadow = "0 10px 25px rgba(0,0,0,0.15)";
-    container.style.background = "#fff";
+    const host = document.createElement("div");
+    const shadow = host.attachShadow({ mode: "open" });
 
-    const iframe = document.createElement("iframe");
-    iframe.src = CONFIG.appUrl;
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-    iframe.style.border = "none";
-    iframe.style.display = "block";
+    host.style.display = "block";
+    host.style.width = "100%";
+    host.style.height = "100%";
 
-    iframe.allow = "camera; microphone; clipboard-read; clipboard-write";
-    iframe.loading = "lazy";
+    mountPoint.appendChild(host);
 
-    container.appendChild(iframe);
-    mountPoint.appendChild(container);
-  }
+    shadow.innerHTML = `
+      <style>
+        :host {
+          all: initial;
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
 
-  function findMountPoint() {
+        #container {
+          width: 100%;
+          height: 100%;
+          min-height: ${DEFAULT_HEIGHT}px;
+          min-width: ${DEFAULT_WIDTH}px;
+          position: relative;
+          overflow: hidden;
+          border-radius: 12px;
+          background: white;
+        }
 
-    const explicit = document.querySelector("[data-reachx-widget]");
-    if (explicit) return explicit;
+        #flutter-target {
+          width: 100%;
+          height: 100%;
+        }
+      </style>
 
-    const script = document.currentScript;
-    if (script && script.parentElement) return script.parentElement;
+      <div id="container">
+        <div id="flutter-target"></div>
+      </div>
+    `;
 
-    return document.body;
+    const target = shadow.getElementById("flutter-target");
+
+    const script = document.createElement("script");
+    script.src = GITHUB_URL + "flutter_embed.js";
+    script.async = true;
+
+    script.onload = function () {
+      if (window.FlutterEmbed) {
+        window.FlutterEmbed.init({
+          container: target,
+          appUrl: GITHUB_URL
+        });
+      }
+    };
+
+    document.head.appendChild(script);
   }
 
   function init() {
-    const mountPoint = findMountPoint();
-    createWidget(mountPoint);
+
+    const containers = document.querySelectorAll("[data-flutter-widget]");
+
+    if (containers.length > 0) {
+      containers.forEach(createWidget);
+    } else {
+      createWidget(document.body);
+    }
+
   }
 
   if (document.readyState === "loading") {
