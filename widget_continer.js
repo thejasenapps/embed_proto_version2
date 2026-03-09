@@ -10,7 +10,7 @@
       :host { all: initial; } 
       #container {
         position: fixed; width: 350px; height: 550px;
-        background: white; border-radius: 15px; display: none;
+        background: white; border-radius: 15px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2147483647; overflow: hidden;
       }
       #flutter-target { width: 100%; height: 100%; }
