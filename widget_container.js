@@ -9,19 +9,20 @@
 
   shadow.innerHTML = `
     <style>
-      :host { all: initial; } 
-      #container {
-        width: 100%;
-        height: 100%;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        overflow: hidden;
+      :host { all: initial; }
+
+      #container{
+        width:100%;
+        height:100%;
+        background:white;
+        border-radius:15px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.3);
+        overflow:hidden;
       }
 
-      #flutter-target {
-        width: 100%;
-        height: 100%;
+      #flutter-target{
+        width:100%;
+        height:100%;
       }
     </style>
 
@@ -37,7 +38,7 @@
   script.async = true;
 
   script.onload = () => {
-      if (window.FlutterEmbed) {
+    if (window.FlutterEmbed) {
       window.FlutterEmbed.init({
         container: target,
         appUrl: GITHUB_URL
