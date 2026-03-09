@@ -26,9 +26,10 @@
       }
     </style>
 
-    <div id="container">
-      <div id="flutter-target"></div>
-    </div>
+    // <div id="container">
+    //   <div id="flutter-target"></div>
+    // </div>
+    <div id="flutter-target"></div>
   `;
 
   const target = shadow.getElementById('flutter-target');
