@@ -4,6 +4,8 @@
   const DEFAULT_HEIGHT = 550;
   const DEFAULT_WIDTH = 350;
 
+  const CLIENT_ID = "institution_123";
+
   function createWidget(mountPoint) {
 
     const host = document.createElement("div");
@@ -56,7 +58,7 @@
       if (window.FlutterEmbed) {
         window.FlutterEmbed.init({
           container: target,
-          appUrl: GITHUB_URL
+          appUrl: GITHUB_URL + "?clientId=" + encodeURIComponent(CLIENT_ID)
         });
       }
     };
