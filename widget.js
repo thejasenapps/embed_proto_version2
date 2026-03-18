@@ -13,47 +13,60 @@
         border-radius: 50%; background: #1976D2; color: white; cursor: pointer;
         font-size: 28px; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         z-index: 2147483647; display: flex; align-items: center; justify-content: center;
+        transition: transform 0.2s;
       }
+      #btn:active { transform: scale(0.9); }
+
       #container {
         position: fixed; bottom: 100px; right: 30px; width: 350px; height: 550px;
         background: white; border-radius: 15px; display: none;
         box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2147483647; overflow: hidden;
+        border: 1px solid #eee;
       }
+
+      /* Mobile Fullscreen Logic */
+      @media (max-width: 600px) {
+        #container {
+          bottom: 0; right: 0; width: 100%; height: 100%; border-radius: 0;
+        }
+        #btn { bottom: 20px; right: 20px; }
+      }
+
       #close {
-        position: absolute; top: 10px; right: 10px; background: #fb4c4c;
-        color: white; border: none; border-radius: 50%; width: 25px; height: 25px;
-        cursor: pointer; z-index: 2;
+        position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5);
+        color: white; border: none; border-radius: 50%; width: 30px; height: 30px;
+        cursor: pointer; z-index: 10; font-size: 20px; line-height: 1;
       }
-      #flutter-target { width: 100%; height: 100%; }
+
+      iframe { border: none; width: 100%; height: 100%; }
     </style>
 
-    <button id="btn">💬</button>
+    <button id="btn" aria-label="Open Chat">💬</button>
     <div id="container">
-      <button id="close">×</button>
-      <div id="flutter-target"></div>
+      <button id="close" aria-label="Close Chat">×</button>
+      <iframe id="flutter-frame" src="about:blank"></iframe>
     </div>
   `;
 
   const btn = shadow.getElementById('btn');
   const container = shadow.getElementById('container');
   const close = shadow.getElementById('close');
-  const target = shadow.getElementById('flutter-target');
+  const frame = shadow.getElementById('flutter-frame');
   let isLoaded = false;
-
-  const script = document.createElement('script');
-  script.src = GITHUB_URL + "flutter_embed.js";
-  document.head.appendChild(script);
 
   btn.onclick = () => {
     container.style.display = 'block';
-    if (!isLoaded && window.FlutterEmbed) {
-      window.FlutterEmbed.init({
-        container: target, // Passing the actual element from the shadow
-        appUrl: GITHUB_URL
-      });
+    // Hide the toggle button when chat is open on mobile to save space
+    if (window.innerWidth <= 600) btn.style.display = 'none';
+
+    if (!isLoaded) {
+      frame.src = GITHUB_URL;
       isLoaded = true;
     }
   };
 
-  close.onclick = () => { container.style.display = 'none'; };
+  close.onclick = () => {
+    container.style.display = 'none';
+    btn.style.display = 'flex'; // Show button again
+  };
 })();
